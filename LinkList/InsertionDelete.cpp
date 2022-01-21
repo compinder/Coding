@@ -40,6 +40,31 @@ class Solution{
        }
        tempNode->next = newNode;
      }
+	 void deleteNode(int x){
+		Node *tempNode = head;
+		Node *prevNode = nullptr;
+	 	while(tempNode != nullptr){
+			if(tempNode->data == x){
+				break;
+			}
+			prevNode = tempNode;
+			tempNode = tempNode->next;
+		}
+		if(tempNode == nullptr){
+			cout<<"Node not found"<<endl;
+			return;
+		}
+		// check if it is head node
+		if(prevNode == nullptr){
+			tempNode = head;
+			head = head->next;
+		}
+		else{
+			prevNode->next = tempNode->next;
+		}
+		delete(tempNode);
+		
+	 }
      void printList(){
 		Node *tempNode = head;
 	 	while(tempNode != nullptr){
@@ -60,6 +85,12 @@ int main()
 	List.insertAtBegining(2);
 	List.insertAtEnd(5);
 	List.insertAtEnd(6);
+	List.printList();
+	List.deleteNode(6);
+	List.printList();
+	List.deleteNode(2);
+	List.printList();
+	List.deleteNode(4);
 	List.printList();
 	return 0;
 }
