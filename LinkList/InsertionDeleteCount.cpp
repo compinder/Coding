@@ -88,6 +88,29 @@ class Solution{
     	}
     	delete(tempNode);
 	 }
+     int getCountRecHelper(struct Node* Node){
+        int count;
+        if(Node == nullptr){
+            return 0;
+        }
+        count = getCountRecHelper(Node->next);
+        return count+1;
+     } 
+     int getCountRec(){
+	return getCountRecHelper(head);
+     }
+     int getCountIter(){
+		int count = 0;
+		Node *tempNode = head;
+		if(head == nullptr){
+			return count;
+		}
+		while(tempNode != nullptr){
+			count+=1;
+			tempNode = tempNode->next;
+		}
+        return count;
+     } 
      void printList(){
 		Node *tempNode = head;
 	 	while(tempNode != nullptr){
@@ -122,5 +145,10 @@ int main()
 	List.printList();
 	List.deleteNodeByPos(1);
 	List.printList();
+	List.insertAtEnd(8);
+	List.insertAtEnd(9);
+	List.printList();
+	cout<<List.getCountIter()<<endl;
+	cout<<List.getCountRec()<<endl;
 	return 0;
 }
