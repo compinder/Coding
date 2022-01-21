@@ -40,7 +40,7 @@ class Solution{
        }
        tempNode->next = newNode;
      }
-	 void deleteNode(int x){
+	 void deleteNodeByVal(int x){
 		Node *tempNode = head;
 		Node *prevNode = nullptr;
 	 	while(tempNode != nullptr){
@@ -65,6 +65,29 @@ class Solution{
 		delete(tempNode);
 		
 	 }
+	 void deleteNodeByPos(int x){
+    	Node *tempNode = head;
+    	Node *prevNode = nullptr;
+    	while(tempNode != nullptr &&
+        	x != 1){
+        	x--;
+        	prevNode = tempNode;
+        	tempNode = tempNode->next;
+    	}
+	// Node not found
+    	if(tempNode == nullptr){
+        	return ;
+    	}
+    // check if it is head node
+    	if(prevNode == nullptr){
+            tempNode = head;
+            head = head->next;
+    	}
+    	else{
+        	prevNode->next = tempNode->next;
+    	}
+    	delete(tempNode);
+	 }
      void printList(){
 		Node *tempNode = head;
 	 	while(tempNode != nullptr){
@@ -86,11 +109,18 @@ int main()
 	List.insertAtEnd(5);
 	List.insertAtEnd(6);
 	List.printList();
-	List.deleteNode(6);
+	List.deleteNodeByVal(6);
 	List.printList();
-	List.deleteNode(2);
+	List.deleteNodeByVal(2);
 	List.printList();
-	List.deleteNode(4);
+	List.deleteNodeByVal(4);
+	List.printList();
+	List.insertAtEnd(6);
+	List.insertAtEnd(7);
+	List.printList();
+	List.deleteNodeByPos(4);
+	List.printList();
+	List.deleteNodeByPos(1);
 	List.printList();
 	return 0;
 }
