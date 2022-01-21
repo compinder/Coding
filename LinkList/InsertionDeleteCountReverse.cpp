@@ -110,7 +110,52 @@ class Solution{
 			tempNode = tempNode->next;
 		}
         return count;
-     } 
+     }
+     Node *reverseListHelper(Node* listNode){
+        Node *prevNode;
+        if(listNode == nullptr){
+            return nullptr;
+        }
+        prevNode = reverseListHelper(listNode->next);
+        if(prevNode == nullptr){
+            head = listNode;
+        }
+        else{
+            prevNode->next = listNode;
+        }
+        return listNode;
+     }
+
+    //Function to reverse a linked list.
+     void reverseListRec()
+     {
+        Node *lastNode;
+        lastNode = reverseListHelper(head);
+        lastNode->next = nullptr;
+     }
+	 void reverseListIter()
+     {
+        struct Node *curr;
+        struct Node *prev;
+        struct Node *next;
+        
+        curr = head;
+        prev = NULL;
+        
+        if(head == NULL){
+            return ;
+        }
+        if(head->next == NULL){
+            return ;
+        }
+        while(curr != NULL){
+            next = curr->next;
+            curr->next = prev;
+            prev = curr;
+            curr = next;
+        }
+        head = prev;
+    } 
      void printList(){
 		Node *tempNode = head;
 	 	while(tempNode != nullptr){
@@ -150,5 +195,9 @@ int main()
 	List.printList();
 	cout<<List.getCountIter()<<endl;
 	cout<<List.getCountRec()<<endl;
+	List.reverseListIter();
+	List.printList();
+	List.reverseListRec();
+	List.printList();
 	return 0;
 }
