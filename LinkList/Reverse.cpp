@@ -67,7 +67,47 @@ class Solution{
             curr = next;
         }
         head = prev;
-    } 
+    }
+	void reverseInGroup (int k)
+    { 
+        struct Node *prev;
+        struct Node *curr;
+        struct Node *next;
+        struct Node *tail;
+        struct Node *nHead;
+        struct Node *tempHead;
+        int n = 1;
+        curr = head;
+        prev = nullptr;
+        tail = nullptr;
+        while(1){
+            tempHead = curr;
+            while(curr != nullptr &&
+                n <= k)
+            {
+                    next = curr->next;
+                    curr->next = prev;
+                    prev = curr;
+                    curr = next;
+                    n = n + 1;
+            }
+            
+            if(tail != nullptr){
+                tail->next = prev;
+            }
+            else{
+                nHead = prev;
+            }
+     
+            if(curr == nullptr){
+                break;
+            }
+            n = 1;
+            tail = tempHead;
+            prev = nullptr;
+        }
+        head = nHead;
+    }
      void printList(){
 		Node *tempNode = head;
 	 	while(tempNode != nullptr){
@@ -83,14 +123,21 @@ class Solution{
 int main()
 {
 	Solution List;
+	List.insertAtBegining(9);
+	List.insertAtBegining(8);
+	List.insertAtBegining(7);
+	List.insertAtBegining(6);
 	List.insertAtBegining(5);
 	List.insertAtBegining(4);
 	List.insertAtBegining(3);
 	List.insertAtBegining(2);
+	List.insertAtBegining(1);
 	List.printList();
 	List.reverseListIter();
 	List.printList();
 	List.reverseListRec();
+	List.printList();
+	List.reverseInGroup(4);
 	List.printList();
 	return 0;
 }
