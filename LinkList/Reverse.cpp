@@ -1,6 +1,6 @@
 #include<iostream>
 using namespace std;
-class Solution{
+class LinkList{
  /*Structure of the linked list node is as*/
     struct Node {
   		int data;
@@ -12,7 +12,7 @@ class Solution{
     };
     struct Node *head ;
     public:
-	Solution() {
+	LinkList() {
 		head = nullptr;
 	}
     //Function to insert a node at the beginning of the linked list.
@@ -122,7 +122,7 @@ class Solution{
 };
 int main()
 {
-	Solution List;
+	LinkList List;
 	List.insertAtBegining(9);
 	List.insertAtBegining(8);
 	List.insertAtBegining(7);
