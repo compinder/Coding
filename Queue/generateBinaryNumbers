@@ -1,0 +1,36 @@
+#include <iostream>
+#include<vector>
+#include<queue>
+#include<string>
+
+using namespace std;
+
+// Generate binary numbers from 1 to N
+vector<string> generate(int N)
+{
+	vector<string> result;
+	queue<string> qstrings;
+	string temp;
+	
+	qstrings.push("1");
+	//cout<<N<<endl;
+	for(int i=1;i<=N;i++){
+	   temp = qstrings.front();
+	   result.push_back(temp);
+	   qstrings.pop();
+	   qstrings.push(temp+"0");
+	   qstrings.push(temp+"1");
+	}
+	return result;
+}
+
+
+int main()
+{
+    int n = 15;
+	vector<string> ans = generate(n);  
+	for(auto it:ans) cout<<it<<" ";
+	cout<<endl;
+	
+	return 0;
+}
