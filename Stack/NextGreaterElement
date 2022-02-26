@@ -1,0 +1,72 @@
+/*Given an array, print the Next Greater Element (NGE) for every element. The Next greater Element for an element x is the first greater element on the right side of x in the array. Elements for which no greater element exist, consider the next greater element as -1. */
+
+/*
+For the input array [4, 5, 2, 25], the next greater elements for each element are as follows.
+Element       NGE
+   4      -->   5
+   5      -->   25
+   2      -->   25
+   25     -->   -1 */
+   
+#include<iostream>
+#include<vector>
+#include<stack>
+using namespace std;
+
+
+ // } Driver Code Ends
+class Solution
+{
+    public:
+    //Function to find the next greater element for each element of the array.
+    vector<long long> nextLargerElement(vector<long long> arr, int n){
+        // Your code here
+        vector<long long > vres(arr.size(),0);
+        
+        stack<pair<long long,int>> sElm;
+        pair<long long,int> topElm;
+        
+        for(int i=0;i<arr.size();i++){
+            if(sElm.empty()){
+                sElm.push({arr[i],i});
+            }
+            else{
+                topElm = sElm.top();
+                while(!sElm.empty() &&
+                    arr[i] > topElm.first){
+                        vres[topElm.second] = arr[i];
+                        sElm.pop();
+                        if(sElm.empty() == false){
+                            topElm = sElm.top();
+                        }
+                }
+                
+                sElm.push({arr[i],i});
+            }
+        }
+        while(!sElm.empty()){
+            topElm = sElm.top();
+            vres[topElm.second] = (long long)-1;
+            sElm.pop();
+        }
+        return vres;
+    }
+};
+
+// { Driver Code Starts.
+
+int main()
+{
+        int n;
+        cin >> n;  // Ex: 4
+        vector<long long> arr(n);
+        for(int i=0;i<n;i++)  // Ex: 1 2 3 4
+            cin>>arr[i];  
+        
+        Solution obj;
+        vector <long long> res = obj.nextLargerElement(arr, n);
+        for (long long i : res) cout << i << " ";
+        cout<<endl;
+    
+	return 0;
+}
