@@ -20,11 +20,13 @@ int pop(stack<int>& s);
 int getMin(stack<int>& s);
 
 stack<int> s;
+stack<int> sMin;
 int main(){
 
-		int n = 5 ;
+		int n;
 		int a[5] = {18,19,29,15,16};
-
+        
+        n = sizeof(a)/sizeof(a[0]);
 		while(!isEmpty(s)){
 		    cout<<"!Empty"<<endl;
 		    pop(s);
@@ -41,11 +43,31 @@ int main(){
 
 void push(stack<int>& s, int a){
 	// Your code goes here
+//	cout<<"Push"<<endl;
+    if(s.empty()){
+        while(sMin.empty() == false){
+            sMin.pop();
+        }
+    }
 	s.push(a);
+	if(isEmpty(sMin) == true){
+	    sMin.push(a);
+	}
+	else{
+	    int y = sMin.top();
+
+	    if(a < y){
+	        sMin.push(a);
+	    }
+	    else{
+	        sMin.push(y);
+	    }
+	}
+
 }
 
 bool isFull(stack<int>& s,int n){
-	// Your code goes here
+
 	if(s.size() == n){
 	    return true;
 	}
@@ -59,22 +81,25 @@ bool isEmpty(stack<int>& s){
 }
 
 int pop(stack<int>& s){
-	// Your code goes here
-	if(isEmpty(s) == true) return -1;
+  if(isEmpty(s) == true) return -1;
 	int elm = s.top();
 	s.pop();
+	sMin.pop();
 	return elm;
 }
 
 int getMin(stack<int>& s){
 	// Your code goes here
-	int min = 2147483647;
+	/*(int min = 2147483647;
 
 	while(isEmpty(s) == false){
 	    int elm = pop(s);
 	    if(min > elm){
 	        min = elm;
 	    }
-	}
+	}*/
+	int min;
+	min = sMin.top();
+	sMin.push(min);
 	return min;
 }
