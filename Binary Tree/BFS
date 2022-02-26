@@ -1,0 +1,86 @@
+// Online C++ compiler to run C++ program online
+#include <iostream>
+#include<vector>
+#include<queue>
+using namespace std;
+class BinaryTree {
+    struct BNode {
+        BNode *left;
+        BNode *right;      
+        int data;
+        BNode(int val):data(val) {left = nullptr;right = nullptr;};
+    };
+  
+  BNode *root;
+public:
+    BinaryTree() {
+        root = nullptr;
+    }
+    BNode* createBinaryTree(vector<int> &arr,int idx);
+    BNode *createBNode(int val) {
+        return new BNode(val);
+        
+    }
+    vector<int> BFS();
+};
+
+ BinaryTree ::BNode *BinaryTree :: createBinaryTree(vector<int> &arr,int idx){
+     
+    if(idx >= arr.size()) {
+        return nullptr;
+    }
+    BNode *newNode;
+    int i;
+    newNode = createBNode(arr[idx]);
+    if(root == nullptr){
+        root = newNode;
+    }
+    i = 2*idx+1;
+    newNode->left = createBinaryTree(arr,i);
+    i = i+1;
+    newNode->right = createBinaryTree(arr,i);
+    return newNode;
+}
+vector<int> BinaryTree:: BFS(){
+      //Your code here
+      queue<BNode*> qNodes;
+      vector<int> vres;
+      int size;
+      BNode *currNode;
+      if(root == nullptr){
+          return vres;
+      }
+      qNodes.push(root);
+      while(!qNodes.empty()){
+          size = qNodes.size();
+          while(size != 0){
+            currNode = qNodes.front();
+            vres.push_back(currNode->data);
+            qNodes.pop();
+            if(currNode->left != nullptr){
+                qNodes.push(currNode->left);
+            }
+            if(currNode->right != nullptr){
+                qNodes.push(currNode->right);
+            }
+            size--;
+          }
+      }
+      return vres;
+}
+int main() {
+    // Write C++ code here
+    vector<int> velms{10,20,30,40,50,60,70};
+    vector<int> vBfsOrder;
+    int index = 0;
+    BinaryTree *treeObj;
+    treeObj = new BinaryTree();
+    treeObj->createBinaryTree(velms,index);
+    vBfsOrder = treeObj->BFS();
+    
+    for(const int &elm:vBfsOrder){
+        cout<<elm<<"\t";
+    }
+    cout<<endl;
+    return 0;
+}
