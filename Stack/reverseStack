@@ -1,0 +1,75 @@
+/ * Given a stack, the task is to sort it such that the top of the stack has the greatest element. */
+/ * 
+Input:
+3  // number of elements
+1 2 3   // elements
+Output: 3 2 1
+*/
+#include <iostream>
+#include<stack>
+using namespace std;
+
+class reverseStack{
+    stack<int> s;
+public:
+	void reverse();
+	void reverseHelper(int);
+	void printStack();
+	void Push(int&);
+};
+
+void reverseStack::Push(int &elm){
+    s.push(elm);
+}
+void reverseStack::printStack()
+{
+    while (!s.empty())
+    {
+        printf("%d ", s.top());
+       	s.pop();
+    }
+    printf("\n");
+}
+
+int main()
+{
+    reverseStack *ss = new reverseStack();
+	int n;
+	int k;
+	cin>>n; // number of elements to push
+	for(int i=0;i<n;i++)
+	{
+
+	cin>>k;
+	ss->Push(k);
+	}
+	ss->reverse();
+	cout<<"reversed stack:"<<endl;
+	ss->printStack();
+  return 0;
+}
+
+void reverseStack :: reverseHelper(int nelm){
+    int selm;
+    // if stack is empty then push new element
+    if(s.size() == 0 ){
+        s.push(nelm);
+    }
+    else{
+        selm = s.top();
+        s.pop();
+        reverseHelper(nelm);
+        s.push(selm);
+    }
+}
+void reverseStack :: reverse()
+{
+   int elm;
+   if(s.size() == 0){
+       return;
+   }
+   elm = s.top();
+   s.pop();
+   reverse();
+   reverseHelper(elm);
+}
