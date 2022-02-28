@@ -2,7 +2,7 @@
 / * 
 Input:
 3  // number of elements
-3 2 1   // elements
+1 2 3   // elements
 Output: 3 2 1
 */
 #include <iostream>
