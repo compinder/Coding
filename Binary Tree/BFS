@@ -1,7 +1,8 @@
-// Online C++ compiler to run C++ program online
+// BFS or level order traversal to a Binary Tree.
 #include <iostream>
 #include<vector>
 #include<queue>
+#include<utility>
 using namespace std;
 class BinaryTree {
     struct BNode {
@@ -21,7 +22,7 @@ public:
         return new BNode(val);
         
     }
-    vector<int> BFS();
+    vector<pair<int,int>> BFS();
 };
 
  BinaryTree ::BNode *BinaryTree :: createBinaryTree(vector<int> &arr,int idx){
@@ -41,11 +42,12 @@ public:
     newNode->right = createBinaryTree(arr,i);
     return newNode;
 }
-vector<int> BinaryTree:: BFS(){
+vector<pair<int,int>> BinaryTree:: BFS(){
       //Your code here
       queue<BNode*> qNodes;
-      vector<int> vres;
+      vector<pair<int,int>> vres; // {elm,level}
       int size;
+      int level = -1;
       BNode *currNode;
       if(root == nullptr){
           return vres;
@@ -53,9 +55,10 @@ vector<int> BinaryTree:: BFS(){
       qNodes.push(root);
       while(!qNodes.empty()){
           size = qNodes.size();
+          level +=1;
           while(size != 0){
             currNode = qNodes.front();
-            vres.push_back(currNode->data);
+            vres.push_back({currNode->data,level});
             qNodes.pop();
             if(currNode->left != nullptr){
                 qNodes.push(currNode->left);
@@ -71,15 +74,28 @@ vector<int> BinaryTree:: BFS(){
 int main() {
     // Write C++ code here
     vector<int> velms{10,20,30,40,50,60,70};
-    vector<int> vBfsOrder;
+    vector<pair<int,int>> vBfsOrder;
     int index = 0;
+    int prevlevel = 0;
+    int currlevel;
+    int elm;
     BinaryTree *treeObj;
     treeObj = new BinaryTree();
     treeObj->createBinaryTree(velms,index);
     vBfsOrder = treeObj->BFS();
-    
-    for(const int &elm:vBfsOrder){
-        cout<<elm<<"\t";
+    cout<<"elements at level# "<<prevlevel<<endl;
+    for(int i=0;i<vBfsOrder.size();i++){
+        elm =  vBfsOrder[i].first;
+        currlevel =  vBfsOrder[i].second;
+        if(currlevel == prevlevel){
+            cout<<elm<<"\t";
+        }
+        else{
+            cout<<endl;
+            prevlevel = currlevel;
+            cout<<"elements at level# "<<currlevel<<endl;
+            cout<<elm<<"\t";
+        }
     }
     cout<<endl;
     return 0;
