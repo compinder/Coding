@@ -1,0 +1,88 @@
+/*  Given the root of a binary tree, return the length of the diameter of the tree.
+The diameter of a binary tree is the length of the longest path between any two nodes in a tree. 
+This path may or may not pass through the root.
+The length of a path between two nodes is represented by the number of edges between them. */
+
+/*
+Input: root = [1,2,3,4,5]
+Output: 3
+Explanation: 3 is the length of the path [4,2,1,3] or [5,2,1,3].*/
+
+#include <iostream>
+#include<vector>
+#include<utility>
+using namespace std;
+class BinaryTree {
+    struct BNode {
+        BNode *left;
+        BNode *right;      
+        int data;
+        BNode(int val):data(val) {left = nullptr;right = nullptr;};
+    };
+  
+  BNode *root;
+public:
+    BinaryTree() {
+        root = nullptr;
+    }
+    BNode* createBinaryTree(vector<int> &arr,int idx);
+    BNode *createBNode(int val) {
+        return new BNode(val);
+    }
+    int diameterOfBinaryTreeH(BNode*,int &);
+    int diameterOfBinaryTree();
+        
+};
+
+int BinaryTree::diameterOfBinaryTreeH(BNode* root,int &diameter){
+        int leftH;
+        int rightH;
+        if(root == 0){
+            return 0;
+        }
+        leftH = diameterOfBinaryTreeH(root->left,diameter);
+        rightH = diameterOfBinaryTreeH(root->right,diameter);
+        
+        diameter = (leftH+rightH) > diameter ? (leftH+rightH):diameter;
+        return max(leftH,rightH)+1;
+}
+int BinaryTree :: diameterOfBinaryTree() {
+        int diameter = 0;
+        int height;
+        height = diameterOfBinaryTreeH(root,diameter);
+        return diameter;
+}
+
+BinaryTree ::BNode *BinaryTree :: createBinaryTree(vector<int> &arr,int idx){
+     
+    if(idx >= arr.size()) {
+        return nullptr;
+    }
+    BNode *newNode;
+    int i;
+    newNode = createBNode(arr[idx]);
+    if(root == nullptr){
+        root = newNode;
+    }
+    i = 2*idx+1;
+    newNode->left = createBinaryTree(arr,i);
+    i = i+1;
+    newNode->right = createBinaryTree(arr,i);
+    return newNode;
+}
+
+int main() {
+    vector<int> velms{1,2,3,4,5};
+    vector<pair<int,int>> vBfsOrder;
+    int index = 0;
+    int prevlevel = 0;
+    int currlevel;
+    int elm;
+    BinaryTree *treeObj;
+    treeObj = new BinaryTree();
+    treeObj->createBinaryTree(velms,index);
+    
+    cout<<treeObj->diameterOfBinaryTree()<<endl;
+    return 0;
+}
+
