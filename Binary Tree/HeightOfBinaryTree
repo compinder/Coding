@@ -1,0 +1,84 @@
+/*
+Given a binary tree, find height of it. Height of empty tree is -1, 
+
+Input: root = [1,3,2,5,3,null,9,10]
+Output: 4
+Explanation: The maximum heigth is 4 (1,3,5,10).
+*/
+
+
+#include <iostream>
+#include<vector>
+#include<queue>
+using namespace std;
+class BinaryTree {
+    struct BNode {
+        BNode *left;
+        BNode *right;      
+        int data;
+        BNode(int val):data(val) {left = nullptr;right = nullptr;};
+    };
+  
+  BNode *root;
+public:
+    BinaryTree() {
+        root = nullptr;
+    }
+    BNode* createBinaryTree(vector<int> &arr,int idx);
+    BNode *createBNode(int val) {
+        return new BNode(val);
+    }
+    int height();
+    int heightH(struct BNode *);
+};
+
+BinaryTree ::BNode *BinaryTree :: createBinaryTree(vector<int> &arr,int idx){
+     
+    if(idx >= arr.size() ||
+    arr[idx] == -1) {
+        return nullptr;
+    }
+    BNode *newNode;
+    int i;
+    newNode = createBNode(arr[idx]);
+    if(root == nullptr){
+        root = newNode;
+    }
+    i = 2*idx+1;   // left child
+    newNode->left = createBinaryTree(arr,i);
+    i = i+1;   // right child
+    newNode->right = createBinaryTree(arr,i);
+    return newNode;
+}
+
+int BinaryTree::heightH(struct BNode *node){
+        if(node == nullptr){
+            return 0;
+        }
+        int leftH;
+        int rightH;
+        leftH = heightH(node->left);
+        rightH = heightH(node->right);
+        return max(leftH,rightH)+1;
+}
+    //Function to find the height of a binary tree.
+int BinaryTree::height(){
+        // code here 
+        if(root == nullptr){
+            return -1;
+        }
+        return heightH(root);
+}
+
+int main() {
+    vector<int> velms{1,3,2,5,3,-1,9,10};   // -1 represents null
+   
+    int index = 0;
+    BinaryTree *treeObj;
+    treeObj = new BinaryTree();
+    treeObj->createBinaryTree(velms,index);
+    
+    cout<<treeObj->height()<<endl;
+    return 0;
+}
+
