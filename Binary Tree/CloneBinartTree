@@ -1,0 +1,169 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+/*
+Given a Binary Tree where every node has the following structure. 
+
+struct node {  
+    int key; 
+    struct node *left,*right,*random;
+} 
+The random pointer points to any random node of the binary tree and can even point to NULL, clone the given binary tree.
+*/
+
+/* A binary tree node has data, pointer to left child
+   and a pointer to right child */
+/*
+I/P:
+6
+6 3 L 6 8 R 3 1 L 3 5 R 1 3 X 5 6 X      
+O/P : 1 
+*/
+struct Node
+{
+	int data;
+	struct Node *left;
+	struct Node *right;
+	struct Node *random;
+	
+	Node(int x){
+	    data = x;
+	    left = NULL;
+	    right = NULL;
+	    random = NULL;
+	}
+};
+int checkcloned(Node* a, Node *b)
+{
+	if ((a == NULL and b == NULL))
+		return 1;
+
+	if (a != NULL && b != NULL)
+	{
+		int t = (a->data == b->data && checkcloned(a->left, b->left) && checkcloned(a->right, b->right));
+
+		if (a->random != NULL && b->random != NULL)
+			return (t && a->random->data == b->random->data);
+		if (a->random == b->random)
+			return t;
+
+		return 0;
+	}
+
+	return 0;
+
+}
+
+void inorder(Node *root)
+{
+    if (root == NULL)
+       return;
+    inorder(root->left);
+    cout << root->data << " ";
+    inorder(root->right);
+}
+
+
+class Solution{
+  public:
+    /* The function should clone the passed tree and return 
+       root of the cloned tree */
+    Node* createNode(Node *node){
+        Node *newNode = new Node(node->data);
+        return newNode;
+    }
+    void cloneRandom(Node *tree,Node *newRoot, unordered_map<Node*,Node*> &nMap){
+        
+        if(tree == nullptr){
+            return;
+        }
+        if(tree->random != nullptr){
+            newRoot->random = nMap[tree->random];
+        }
+        cloneRandom(tree->left,newRoot->left,nMap);
+        cloneRandom(tree->right,newRoot->right,nMap);
+    }
+    Node *cloneChildren(Node *tree,Node **newRoot, unordered_map<Node*,Node*> &nMap){
+        Node *newNode;
+        if(tree == nullptr){
+            return nullptr;
+        }
+        newNode = createNode(tree);
+        nMap[tree] = newNode;
+        if(*newRoot == nullptr){
+            *newRoot = newNode;
+        }
+        newNode->left = cloneChildren(tree->left,newRoot,nMap);
+        newNode->right = cloneChildren(tree->right,newRoot,nMap);
+        return newNode;
+    }
+    Node* cloneTree(Node* tree)
+    {
+       //Your code here
+       if(tree == nullptr) return nullptr;
+       Node *newRoot = nullptr;
+       unordered_map<Node*,Node*> nMap;
+       cloneChildren(tree,&newRoot,nMap);
+       cloneRandom(tree,newRoot,nMap);
+       return newRoot;
+    }
+};
+
+
+// { Driver Code Starts.
+/* Driver program to test size function*/
+int main()
+{
+  int t;
+  scanf("%d\n", &t);
+  while (t--)
+  {
+     map<int, Node*> m;
+     int n;
+     scanf("%d",&n);
+     struct Node *root = NULL;
+     struct Node *child;
+     while (n--)
+     {
+        Node *parent;
+        char lr;
+        int n1, n2;
+        scanf("%d %d %c", &n1, &n2, &lr);
+
+        if (m.find(n1) == m.end())
+        {
+           parent = new Node(n1);
+           m[n1] = parent;
+           if (root == NULL)
+             root = parent;
+        }
+        else
+           parent = m[n1];
+
+        child = new Node(n2);
+        if (lr == 'L'){
+          parent->left = child;
+           m[n2]  = child;
+        }
+        else if(lr=='R'){
+          parent->right = child;
+           m[n2]  = child;
+        }
+        else{
+          parent->random = m[n2];
+        }
+
+
+     }
+     Solution obj;
+     Node *t = obj.cloneTree(root);
+     if(t==root)
+        cout<<0<<endl;
+     else
+     cout<<checkcloned(root,t);
+     cout<<"\n";
+  }
+  return 0;
+}
+
+  // } Driver Code Ends
